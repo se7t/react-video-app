@@ -2,8 +2,6 @@
 
 This app stores user's favorite videos in context of a website.
 
-<br/>
-
 ## 🔬 Technologies
 
 1.  **React**
@@ -30,8 +28,6 @@ This app stores user's favorite videos in context of a website.
 
     `https://reactstrap.github.io/`
 
-<br/>
-
 ## 🖥️ Installation
 
 Download the React Video App repository.
@@ -55,8 +51,6 @@ REACT_APP_VIMEO_ACCESS_TOKEN=YOUR_VIMEO_ACCESS_TOKEN
 
 For instructions on how to obtain those tokens, visit [YouTube Data API Overview](https://developers.google.com/youtube/v3/getting-started) and [Vimeo API - Getting Started](https://developer.vimeo.com/api/guides/start).
 
-<br/>
-
 ## 🧰 Usage
 
 Use the package manager [npm](https://www.npmjs.com/) to start the development server.
@@ -64,8 +58,6 @@ Use the package manager [npm](https://www.npmjs.com/) to start the development s
 ```bash
 $ npm start
 ```
-
-<br/>
 
 ## 📄 License
 
