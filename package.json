@@ -1,5 +1,12 @@
 {
   "name": "react-video-app",
+  "license": "MIT",
+  "author": {
+    "name": "se7t",
+    "email": "kacper.kochan@protonmail.com",
+    "url": "https://www.linkedin.com/in/kacper-kochan-42b27219a/"
+  },
+  "homepage": "https://github.com/se7t/react-video-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,8 +17,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "reactstrap": "^8.9.0",
-    "web-vitals": "^1.0.1"
+    "reactstrap": "^8.9.0"
   },
   "scripts": {
     "start": "react-scripts start",
