@@ -28,6 +28,12 @@ This app stores user's favorite videos in context of a website.
 
     `https://reactstrap.github.io/`
 
+1.  **axios**
+
+    Promise based HTTP client for the browser and node.js
+
+    `https://github.com/axios/axios`
+
 ## 🖥️ Installation
 
 Download the React Video App repository.
