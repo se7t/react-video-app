@@ -21,28 +21,19 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 import getVideoId from 'get-video-id';
+import moment from 'moment';
 
 class Video {
-  constructor(id, thumbnail, title, author, description) {
+  constructor(id, thumbnail, title, author, description, views, likes, dateAdded, platform) {
     this.id = id;
     this.thumbnail = thumbnail;
     this.title = title;
     this.author = author;
     this.description = description;
-  }
-}
-
-class YouTubeVideo extends Video {
-  constructor(id, thumbnail, title, author, description) {
-    super(id, thumbnail, title, author, description);
-    this.platform = 'YouTube';
-  }
-}
-
-class VimeoVideo extends Video {
-  constructor(id, thumbnail, title, author, description) {
-    super(id, thumbnail, title, author, description);
-    this.platform = 'Vimeo';
+    this.views = views;
+    this.likes = likes;
+    this.dateAdded = dateAdded;
+    this.platform = platform;
   }
 }
 
@@ -58,18 +49,21 @@ function App() {
       if (getVideoId(data.videoUrl).service === 'youtube') {
         axios
           .get(
-            `https://www.googleapis.com/youtube/v3/videos?id=${getVideoId(data.videoUrl).id
-            }&key=${process.env.REACT_APP_YOUTUBE_API_KEY}&part=snippet`,
+            `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&id=${getVideoId(data.videoUrl).id}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`,
           )
           .then((response) => {
             if (response.data.pageInfo.totalResults !== 0) {
-              const responseData = response.data.items[0].snippet;
-              const fetchedVideo = new YouTubeVideo(
+              const responseData = response.data.items[0];
+              const fetchedVideo = new Video(
                 response.data.items[0].id,
-                responseData.thumbnails.medium.url,
-                responseData.title,
-                responseData.channelTitle,
-                `${responseData.description.substr(0, 250)}\u2026`, // cut description after 250 characters.
+                responseData.snippet.thumbnails.medium.url,
+                responseData.snippet.title,
+                responseData.snippet.channelTitle,
+                `${responseData.snippet.description.substr(0, 250)}\u2026`, // cut description after 250 characters.
+                responseData.statistics.viewCount,
+                responseData.statistics.likeCount,
+                moment().format('MMM Do YYYY, h:mm:ss a'),
+                'YouTube',
               );
 
               setVideos([...videos, fetchedVideo]);
@@ -100,15 +94,20 @@ function App() {
           )
           .then((response) => {
             if (response.data.type === 'video') {
-              const fetchedVideo = new VimeoVideo(
+              const fetchedVideo = new Video(
                 // API does not provide ID, instead we get it from the URI.
                 // Vimeo IDs are always 9 characters long.
                 response.data.uri.slice(-9),
-                // API does not name the sizes, 2 stands for size 295x166. Sizes 0-6 are available.
+                // API does not name the sizes, 2 stands for size 295x166.
                 response.data.pictures.sizes[2].link,
                 response.data.name,
                 response.data.user.name,
-                `${response.data.description.substr(0, 250)}\u2026`, // cut description after 250 characters.
+                `${response.data.description.substr(0, 250)}\u2026`,
+                // Vimeo API does not provide view count
+                'Unknown',
+                response.data.metadata.connections.likes.total,
+                moment().format('MMM Do YYYY, h:mm:ss a'),
+                'YouTube',
               );
 
               setVideos([...videos, fetchedVideo]);
