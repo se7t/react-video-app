@@ -18,10 +18,14 @@ import {
   Label,
   Row,
 } from 'reactstrap';
+import {
+  PlayArrow, Favorite, Delete,
+} from '@material-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 import getVideoId from 'get-video-id';
 import moment from 'moment';
+import numeral from 'numeral';
 
 class Video {
   constructor(id, thumbnail, title, author, description, views, likes, dateAdded, platform) {
@@ -182,8 +186,32 @@ function App() {
                     <CardSubtitle tag="h6" className="mb-2 text-muted">
                       {video.author}
                     </CardSubtitle>
-                    <CardText>{video.description}</CardText>
-                    <Button>Button</Button>
+                    <Row>
+                      <Col>
+                        <CardText>
+                          Views:
+                          {' '}
+                          {numeral(video.views).format('0.0a')}
+                        </CardText>
+                      </Col>
+                      <Col>
+                        <CardText>
+                          Likes:
+                          {' '}
+                          {numeral(video.likes).format('0.0a')}
+                        </CardText>
+                      </Col>
+                    </Row>
+                    <CardText>
+                      Added on:
+                      {' '}
+                      {video.dateAdded}
+                    </CardText>
+                    <Row>
+                      <Col><Button color="primary"><PlayArrow /></Button></Col>
+                      <Col><Button color="success"><Favorite /></Button></Col>
+                      <Col><Button color="danger"><Delete /></Button></Col>
+                    </Row>
                   </CardBody>
                 </Card>
               </Col>
