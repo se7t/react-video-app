@@ -46,6 +46,9 @@ function App() {
   const { control, handleSubmit } = useForm();
   const [videos, setVideos] = useState([]);
   const [alert, setAlert] = useState({});
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const onDismiss = () => setAlertVisible(false);
 
   const handleAddToFav = (handledVideo) => {
     // eslint-disable-next-line no-param-reassign
@@ -55,6 +58,8 @@ function App() {
       bootstrapColor: 'success',
       bootstrapMessage: 'Updated Favorites.',
     });
+
+    setAlertVisible(true);
   };
 
   const handleDelete = (handledVideo) => {
@@ -65,11 +70,14 @@ function App() {
       bootstrapColor: 'success',
       bootstrapMessage: 'Video Deleted.',
     });
+
+    setAlertVisible(true);
   };
 
   // Temporarily disabled ID search
   const onSubmit = (data) => {
     if (!videos.some((video) => video.id === getVideoId(data.videoUrl).id)) {
+      setAlertVisible(true);
       // change to switch
       if (getVideoId(data.videoUrl).service === 'youtube') {
         axios
@@ -188,7 +196,7 @@ function App() {
         </Form>
         {videos.length > 0 || alert.bootstrapColor === 'success'
           ? (
-            <Alert className="mt-4" color={alert.bootstrapColor}>
+            <Alert className="mt-4" color={alert.bootstrapColor} isOpen={alertVisible} toggle={onDismiss}>
               {alert.bootstrapMessage}
             </Alert>
           )
