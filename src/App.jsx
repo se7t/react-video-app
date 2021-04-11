@@ -57,6 +57,16 @@ function App() {
     });
   };
 
+  const handleDelete = (handledVideo) => {
+    // eslint-disable-next-line no-param-reassign
+    setVideos(videos.filter((item) => item !== handledVideo));
+
+    setAlert({
+      bootstrapColor: 'success',
+      bootstrapMessage: 'Video Deleted.',
+    });
+  };
+
   // Temporarily disabled ID search
   const onSubmit = (data) => {
     if (!videos.some((video) => video.id === getVideoId(data.videoUrl).id)) {
@@ -234,7 +244,7 @@ function App() {
                           )}
 
                       </Col>
-                      <Col><Button color="danger"><Delete /></Button></Col>
+                      <Col><Button color="danger" onClick={() => handleDelete(video)}><Delete /></Button></Col>
                     </Row>
                   </CardBody>
                 </Card>
