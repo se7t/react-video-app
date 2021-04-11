@@ -19,7 +19,7 @@ import {
   Row,
 } from 'reactstrap';
 import {
-  PlayArrow, Favorite, Delete,
+  PlayArrow, Favorite, FavoriteBorderOutlined, Delete,
 } from '@material-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -46,6 +46,16 @@ function App() {
   const { control, handleSubmit } = useForm();
   const [videos, setVideos] = useState([]);
   const [alert, setAlert] = useState({});
+
+  const handleAddToFav = (handledVideo) => {
+    // eslint-disable-next-line no-param-reassign
+    handledVideo.isFavorite = !(handledVideo.isFavorite);
+
+    setAlert({
+      bootstrapColor: 'success',
+      bootstrapMessage: 'Updated Favorites.',
+    });
+  };
 
   // Temporarily disabled ID search
   const onSubmit = (data) => {
@@ -210,7 +220,20 @@ function App() {
                     </CardText>
                     <Row>
                       <Col><Button color="primary"><PlayArrow /></Button></Col>
-                      <Col><Button color="success"><Favorite /></Button></Col>
+                      <Col>
+                        {video.isFavorite
+                          ? (
+                            <Button color="warning" onClick={() => handleAddToFav(video)}>
+                              <FavoriteBorderOutlined />
+                            </Button>
+                          )
+                          : (
+                            <Button color="success" onClick={() => handleAddToFav(video)}>
+                              <Favorite />
+                            </Button>
+                          )}
+
+                      </Col>
                       <Col><Button color="danger"><Delete /></Button></Col>
                     </Row>
                   </CardBody>
