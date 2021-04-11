@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import React, { useState } from 'react';
 import {
   Alert,
@@ -27,17 +26,21 @@ import getVideoId from 'get-video-id';
 import moment from 'moment';
 import numeral from 'numeral';
 
+import VideoModal from './components/VideoModal';
+
 class Video {
   // eslint-disable-next-line max-len
-  constructor(id, thumbnail, title, author, views, likes, dateAdded, platform, isFavorite) {
+  constructor(id, thumbnail, title, author, views, likes, iframe, dateAdded, platform, url, isFavorite) {
     this.id = id;
     this.thumbnail = thumbnail;
     this.title = title;
     this.author = author;
     this.views = views;
     this.likes = likes;
+    this.iframe = iframe;
     this.dateAdded = dateAdded;
     this.platform = platform;
+    this.url = url;
     this.isFavorite = isFavorite;
   }
 }
@@ -94,8 +97,16 @@ function App() {
                 responseData.snippet.channelTitle,
                 responseData.statistics.viewCount,
                 responseData.statistics.likeCount,
+                // YouTube does not provide iframe in API
+                `<iframe src='https://youtube.com/embed/${response.data.items[0].id}' 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen 
+                title=${responseData.snippet.title}</iframe>`,
                 moment().format('MMM Do YYYY, h:mm:ss a'),
                 'YouTube',
+                // YouTube does not provide url in API
+                `https://youtube.com/${response.data.items[0].id}`,
                 false,
               );
 
@@ -138,8 +149,10 @@ function App() {
                 // Vimeo API does not provide view count
                 'Unknown',
                 response.data.metadata.connections.likes.total,
+                response.data.embed.html,
                 moment().format('MMM Do YYYY, h:mm:ss a'),
                 'YouTube',
+                response.data.link,
                 false,
               );
 
@@ -201,11 +214,13 @@ function App() {
             </Alert>
           )
           : false}
+
         <div>
           <Row xs="1" sm="2" xl="3">
             {videos.map((video) => (
               <Col className="mt-4" key={video.id}>
                 <Card>
+                  {/* TODO: Open modal on thumbnail click */}
                   <CardImg
                     top
                     width="100%"
@@ -239,7 +254,15 @@ function App() {
                       {video.dateAdded}
                     </CardText>
                     <Row>
-                      <Col><Button color="primary"><PlayArrow /></Button></Col>
+                      <Col>
+                        <VideoModal
+                          title={video.title}
+                          iframe={video.iframe}
+                          platform={video.platform}
+                          videoUrl={video.url}
+                          buttonLabel={<PlayArrow />}
+                        />
+                      </Col>
                       <Col>
                         {video.isFavorite
                           ? (
