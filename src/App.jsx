@@ -186,11 +186,13 @@ function App() {
             Submit
           </Button>
         </Form>
-        {videos.length > 0 && (
-          <Alert className="mt-4" color={alert.bootstrapColor}>
-            {alert.bootstrapMessage}
-          </Alert>
-        )}
+        {videos.length > 0 || alert.bootstrapColor === 'success'
+          ? (
+            <Alert className="mt-4" color={alert.bootstrapColor}>
+              {alert.bootstrapMessage}
+            </Alert>
+          )
+          : false}
         <div>
           <Row xs="1" sm="2" xl="3">
             {videos.map((video) => (
