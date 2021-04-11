@@ -28,23 +28,24 @@ import moment from 'moment';
 import numeral from 'numeral';
 
 class Video {
-  constructor(id, thumbnail, title, author, description, views, likes, dateAdded, platform) {
+  // eslint-disable-next-line max-len
+  constructor(id, thumbnail, title, author, views, likes, dateAdded, platform, isFavorite) {
     this.id = id;
     this.thumbnail = thumbnail;
     this.title = title;
     this.author = author;
-    this.description = description;
     this.views = views;
     this.likes = likes;
     this.dateAdded = dateAdded;
     this.platform = platform;
+    this.isFavorite = isFavorite;
   }
 }
 
 function App() {
   const { control, handleSubmit } = useForm();
   const [videos, setVideos] = useState([]);
-  const [success, setSuccess] = useState({});
+  const [alert, setAlert] = useState({});
 
   // Temporarily disabled ID search
   const onSubmit = (data) => {
@@ -63,20 +64,20 @@ function App() {
                 responseData.snippet.thumbnails.medium.url,
                 responseData.snippet.title,
                 responseData.snippet.channelTitle,
-                `${responseData.snippet.description.substr(0, 250)}\u2026`, // cut description after 250 characters.
                 responseData.statistics.viewCount,
                 responseData.statistics.likeCount,
                 moment().format('MMM Do YYYY, h:mm:ss a'),
                 'YouTube',
+                false,
               );
 
               setVideos([...videos, fetchedVideo]);
-              setSuccess({
+              setAlert({
                 bootstrapColor: 'success',
                 bootstrapMessage: 'Video successfully added.',
               });
             } else {
-              setSuccess({
+              setAlert({
                 bootstrapColor: 'danger',
                 bootstrapMessage: 'Requested video does not exist.',
               });
@@ -85,7 +86,7 @@ function App() {
           .catch((error) => {
             // eslint-disable-next-line no-console
             console.log(error);
-            setSuccess({
+            setAlert({
               bootstrapColor: 'danger',
               bootstrapMessage: 'Failed to fetch video. Check console for more information.',
             });
@@ -106,21 +107,21 @@ function App() {
                 response.data.pictures.sizes[2].link,
                 response.data.name,
                 response.data.user.name,
-                `${response.data.description.substr(0, 250)}\u2026`,
                 // Vimeo API does not provide view count
                 'Unknown',
                 response.data.metadata.connections.likes.total,
                 moment().format('MMM Do YYYY, h:mm:ss a'),
                 'YouTube',
+                false,
               );
 
               setVideos([...videos, fetchedVideo]);
-              setSuccess({
+              setAlert({
                 bootstrapColor: 'success',
                 bootstrapMessage: 'Video successfully added.',
               });
             } else {
-              setSuccess({
+              setAlert({
                 bootstrapColor: 'danger',
                 bootstrapMessage: 'Requested video does not exist.',
               });
@@ -129,14 +130,14 @@ function App() {
           .catch((error) => {
             // eslint-disable-next-line no-console
             console.log(error);
-            setSuccess({
+            setAlert({
               bootstrapColor: 'danger',
               bootstrapMessage: 'Failed to fetch video. Check console for more information.',
             });
           });
       }
     } else {
-      setSuccess({
+      setAlert({
         bootstrapColor: 'info',
         bootstrapMessage: 'Video already exists.',
       });
@@ -166,8 +167,8 @@ function App() {
           </Button>
         </Form>
         {videos.length > 0 && (
-          <Alert className="mt-4" color={success.bootstrapColor}>
-            {success.bootstrapMessage}
+          <Alert className="mt-4" color={alert.bootstrapColor}>
+            {alert.bootstrapMessage}
           </Alert>
         )}
         <div>
