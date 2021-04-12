@@ -28,6 +28,8 @@ import numeral from 'numeral';
 
 import VideoModal from './components/VideoModal';
 
+import SampleVideos from './utils/LoadSampleVideos';
+
 class Video {
   // eslint-disable-next-line max-len
   constructor(id, thumbnail, title, author, views, likes, iframe, dateAdded, platform, url, isFavorite) {
@@ -78,7 +80,7 @@ function App() {
   };
 
   // Temporarily disabled ID search
-  const onSubmit = (data) => {
+  const fetchVideoData = (data) => {
     if (!videos.some((video) => video.id === getVideoId(data.videoUrl).id)) {
       setAlertVisible(true);
       // change to switch
@@ -185,11 +187,18 @@ function App() {
     }
   };
 
+  const handleSampleVideos = () => {
+    if (SampleVideos.length > 0) {
+      fetchVideoData({ videoUrl: SampleVideos[0] });
+      SampleVideos.shift();
+    }
+  };
+
   return (
     <div>
       <Container>
         <h1 className="text-center">React Video App</h1>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(fetchVideoData)}>
           <FormGroup>
             <Label for="videoURL">Video URL:</Label>
             <Controller
@@ -205,6 +214,14 @@ function App() {
           </FormGroup>
           <Button type="submit" color="primary">
             Submit
+          </Button>
+          <Button className="ml-4" color="success" onClick={handleSampleVideos}>
+            Load Sample Video
+            (
+            {' '}
+            {SampleVideos.length}
+            /12
+            )
           </Button>
         </Form>
         {videos.length > 0 || alert.bootstrapColor === 'success'
