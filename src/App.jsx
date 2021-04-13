@@ -347,6 +347,9 @@ function App() {
             marginPagesDisplayed="1"
             previousLabel="Previous"
             nextLabel="Next"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
             onPageChange={changePage}
             containerClassName="pagination justify-content-center mt-4"
             pageClassName="page-item"
