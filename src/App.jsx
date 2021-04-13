@@ -25,6 +25,7 @@ import axios from 'axios';
 import getVideoId from 'get-video-id';
 import moment from 'moment';
 import numeral from 'numeral';
+import ReactPaginate from 'react-paginate';
 
 import VideoModal from './components/VideoModal';
 
@@ -52,6 +53,15 @@ function App() {
   const [videos, setVideos] = useState([]);
   const [alert, setAlert] = useState({});
   const [alertVisible, setAlertVisible] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const videosPerPage = 6;
+  const pagesVisited = pageNumber * videosPerPage;
+  const pageCount = Math.ceil(videos.length / videosPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
   const onDismiss = () => setAlertVisible(false);
 
@@ -194,6 +204,73 @@ function App() {
     }
   };
 
+  const displayVideos = videos.slice(pagesVisited, pagesVisited + videosPerPage).map((video) => (
+    <Col className="mt-4" key={video.id}>
+      <Card>
+        {/* TODO: Open modal on thumbnail click */}
+        <CardImg
+          top
+          width="100%"
+          src={video.thumbnail}
+          alt="Card image cap"
+        />
+        <CardBody>
+          <CardTitle tag="h5">{video.title}</CardTitle>
+          <CardSubtitle tag="h6" className="mb-2 text-muted">
+            {video.author}
+          </CardSubtitle>
+          <Row>
+            <Col>
+              <CardText>
+                Views:
+                {' '}
+                {numeral(video.views).format('0.0a')}
+              </CardText>
+            </Col>
+            <Col>
+              <CardText>
+                Likes:
+                {' '}
+                {numeral(video.likes).format('0.0a')}
+              </CardText>
+            </Col>
+          </Row>
+          <CardText>
+            Added on:
+            {' '}
+            {video.dateAdded}
+          </CardText>
+          <Row>
+            <Col>
+              <VideoModal
+                title={video.title}
+                iframe={video.iframe}
+                platform={video.platform}
+                videoUrl={video.url}
+                buttonLabel={<PlayArrow />}
+              />
+            </Col>
+            <Col>
+              {video.isFavorite
+                ? (
+                  <Button color="warning" onClick={() => handleAddToFav(video)}>
+                    <FavoriteBorderOutlined />
+                  </Button>
+                )
+                : (
+                  <Button color="success" onClick={() => handleAddToFav(video)}>
+                    <Favorite />
+                  </Button>
+                )}
+
+            </Col>
+            <Col><Button color="danger" onClick={() => handleDelete(video)}><Delete /></Button></Col>
+          </Row>
+        </CardBody>
+      </Card>
+    </Col>
+  ));
+
   return (
     <div>
       <Container>
@@ -234,73 +311,26 @@ function App() {
 
         <div>
           <Row xs="1" sm="2" xl="3">
-            {videos.map((video) => (
-              <Col className="mt-4" key={video.id}>
-                <Card>
-                  {/* TODO: Open modal on thumbnail click */}
-                  <CardImg
-                    top
-                    width="100%"
-                    src={video.thumbnail}
-                    alt="Card image cap"
-                  />
-                  <CardBody>
-                    <CardTitle tag="h5">{video.title}</CardTitle>
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">
-                      {video.author}
-                    </CardSubtitle>
-                    <Row>
-                      <Col>
-                        <CardText>
-                          Views:
-                          {' '}
-                          {numeral(video.views).format('0.0a')}
-                        </CardText>
-                      </Col>
-                      <Col>
-                        <CardText>
-                          Likes:
-                          {' '}
-                          {numeral(video.likes).format('0.0a')}
-                        </CardText>
-                      </Col>
-                    </Row>
-                    <CardText>
-                      Added on:
-                      {' '}
-                      {video.dateAdded}
-                    </CardText>
-                    <Row>
-                      <Col>
-                        <VideoModal
-                          title={video.title}
-                          iframe={video.iframe}
-                          platform={video.platform}
-                          videoUrl={video.url}
-                          buttonLabel={<PlayArrow />}
-                        />
-                      </Col>
-                      <Col>
-                        {video.isFavorite
-                          ? (
-                            <Button color="warning" onClick={() => handleAddToFav(video)}>
-                              <FavoriteBorderOutlined />
-                            </Button>
-                          )
-                          : (
-                            <Button color="success" onClick={() => handleAddToFav(video)}>
-                              <Favorite />
-                            </Button>
-                          )}
-
-                      </Col>
-                      <Col><Button color="danger" onClick={() => handleDelete(video)}><Delete /></Button></Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-            ))}
+            {displayVideos}
           </Row>
+          <ReactPaginate
+            pageCount={pageCount}
+            pageRangeDisplayed="5"
+            marginPagesDisplayed="1"
+            previousLabel="Previous"
+            nextLabel="Next"
+            onPageChange={changePage}
+            containerClassName="pagination justify-content-center mt-4"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            activeClassName="page-item active"
+            activeLinkClassName="page-link "
+            previousClassName="page-item"
+            nextClassName="page-item"
+            previousLinkClassName="page-link"
+            nextLinkClassName="page-link"
+            disabledClassName="page-item disabled"
+          />
         </div>
       </Container>
     </div>
