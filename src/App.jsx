@@ -1,7 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import {
   Alert,
   Button,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Card,
   CardBody,
   CardImg,
@@ -54,6 +59,9 @@ function App() {
   const [alert, setAlert] = useState({});
   const [alertVisible, setAlertVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
+  const [dropdownState, setDropdownState] = useState(false);
+
+  const toggleDropdown = () => setDropdownState(!dropdownState);
 
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
@@ -61,6 +69,11 @@ function App() {
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
+  };
+
+  const sortVideos = (direction) => {
+    const sorted = [...videos].sort((a, b) => moment(a.dateAdded).diff(b.dateAdded));
+    return (direction === 'ascending') ? setVideos(sorted) : setVideos(sorted.reverse());
   };
 
   const onDismiss = () => setAlertVisible(false);
@@ -115,7 +128,8 @@ function App() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen 
                 title=${responseData.snippet.title}</iframe>`,
-                moment().format('MMM Do YYYY, h:mm:ss a'),
+                // Get sortable date, then render readable date in component
+                moment().format(),
                 'YouTube',
                 // YouTube does not provide url in API
                 `https://youtube.com/${response.data.items[0].id}`,
@@ -162,7 +176,7 @@ function App() {
                 'Unknown',
                 response.data.metadata.connections.likes.total,
                 response.data.embed.html,
-                moment().format('MMM Do YYYY, h:mm:ss a'),
+                moment().format(),
                 'YouTube',
                 response.data.link,
                 false,
@@ -238,7 +252,7 @@ function App() {
           <CardText>
             Added on:
             {' '}
-            {video.dateAdded}
+            {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
           </CardText>
           <Row>
             <Col>
@@ -292,6 +306,15 @@ function App() {
           <Button type="submit" color="primary">
             Submit
           </Button>
+          <ButtonDropdown className="ml-4" isOpen={dropdownState} toggle={toggleDropdown}>
+            <DropdownToggle caret color="info">
+              Sort
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={() => (sortVideos('ascending'))}>Ascending</DropdownItem>
+              <DropdownItem onClick={() => (sortVideos('descending'))}>Descending</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
           <Button className="ml-4" color="success" onClick={handleSampleVideos}>
             Load Sample Video
             (
