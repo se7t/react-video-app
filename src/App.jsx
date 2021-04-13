@@ -60,6 +60,7 @@ function App() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [dropdownState, setDropdownState] = useState(false);
+  const [samplesLoaded, setSamplesLoaded] = useState(false);
 
   const toggleDropdown = () => setDropdownState(!dropdownState);
 
@@ -212,10 +213,19 @@ function App() {
   };
 
   const handleSampleVideos = () => {
-    if (SampleVideos.length > 0) {
-      fetchVideoData({ videoUrl: SampleVideos[0] });
-      SampleVideos.shift();
+    if (samplesLoaded === false) {
+      setVideos([...SampleVideos]);
+      setAlert({
+        bootstrapColor: 'success',
+        bootstrapMessage: `Loaded ${SampleVideos.length} sample videos.`,
+      });
+    } else if (samplesLoaded === true) {
+      setAlert({
+        bootstrapColor: 'danger',
+        bootstrapMessage: 'Sample videos are already loaded.',
+      });
     }
+    setAlertVisible(true);
   };
 
   const displayVideos = videos.slice(pagesVisited, pagesVisited + videosPerPage).map((video) => (
@@ -316,12 +326,7 @@ function App() {
             </DropdownMenu>
           </ButtonDropdown>
           <Button className="ml-4" color="success" onClick={handleSampleVideos}>
-            Load Sample Video
-            (
-            {' '}
-            {SampleVideos.length}
-            /12
-            )
+            Load Sample Videos
           </Button>
         </Form>
         {videos.length > 0 || alert.bootstrapColor === 'success'
