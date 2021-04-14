@@ -10,7 +10,7 @@ const SampleVideos = [
     dateAdded: '2010-11-20T06:24:12+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/sXxbkjlHvf4',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'M9QT7CmuJYM',
@@ -36,7 +36,7 @@ const SampleVideos = [
     dateAdded: '2019-10-15T12:00:25+02:00',
     platform: 'YouTube',
     url: 'https://vimeo.com/topicstories/hestheone',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'wofz0k6FCMU',
@@ -75,7 +75,7 @@ const SampleVideos = [
     dateAdded: '2013-02-01T11:40:42+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/dKFUgnMjkzE',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '_8sx8OJGDoQ',
@@ -88,7 +88,7 @@ const SampleVideos = [
     dateAdded: '2014-12-15T00:33:10+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/_8sx8OJGDoQ',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'WdBldz3YLss',
@@ -114,7 +114,7 @@ const SampleVideos = [
     dateAdded: '2021-02-08T14:36:48+01:00',
     platform: 'YouTube',
     url: 'https://vimeo.com/528617116',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '265793714',
@@ -127,7 +127,7 @@ const SampleVideos = [
     dateAdded: '2016-02-14T22:58:19+01:00',
     platform: 'YouTube',
     url: 'https://vimeo.com/265793714',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'BubwLnPcQjc',
@@ -140,7 +140,7 @@ const SampleVideos = [
     dateAdded: '2019-01-03T09:36:51+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/BubwLnPcQjc',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '530671012',
@@ -166,7 +166,7 @@ const SampleVideos = [
     dateAdded: '2011-10-26T18:37:44+02:00',
     platform: 'YouTube',
     url: 'https://youtube.com/lTRiuFIWV54',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'TcUfUkYsGq0',
@@ -257,7 +257,7 @@ const SampleVideos = [
     dateAdded: '2019-06-01T04:25:05+02:00',
     platform: 'YouTube',
     url: 'https://vimeo.com/531275866',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'M8fdi6TwFHY',
@@ -270,7 +270,7 @@ const SampleVideos = [
     dateAdded: '2014-08-09T09:37:21+02:00',
     platform: 'YouTube',
     url: 'https://youtube.com/M8fdi6TwFHY',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'L5uV3gmOH9g',
@@ -309,7 +309,7 @@ const SampleVideos = [
     dateAdded: '2018-01-04T10:36:23+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/2sBFkfcB8WA',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'PLb720ZPcQI',
@@ -322,7 +322,7 @@ const SampleVideos = [
     dateAdded: '2011-01-28T02:18:50+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/PLb720ZPcQI',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'rb8z2BMrd60',
@@ -348,7 +348,7 @@ const SampleVideos = [
     dateAdded: '2013-02-17T01:50:52+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/-qlp5x3V0xI',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '531387863',
@@ -439,7 +439,7 @@ const SampleVideos = [
     dateAdded: '2009-05-26T05:47:26+02:00',
     platform: 'YouTube',
     url: 'https://vimeo.com/521629477',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '531825168',
@@ -491,7 +491,7 @@ const SampleVideos = [
     dateAdded: '2013-06-24T05:33:45+02:00',
     platform: 'YouTube',
     url: 'https://youtube.com/T3W4Mx2aSGE',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'aANF2OOVX40',
@@ -517,7 +517,7 @@ const SampleVideos = [
     dateAdded: '2014-02-24T05:56:15+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/T4P0-7BXlao',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '518404753',
@@ -621,7 +621,7 @@ const SampleVideos = [
     dateAdded: '2015-01-30T09:20:56+01:00',
     platform: 'YouTube',
     url: 'https://vimeo.com/483817264',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '-Z4jx5VMw8M',
@@ -634,7 +634,7 @@ const SampleVideos = [
     dateAdded: '2010-10-16T10:28:37+02:00',
     platform: 'YouTube',
     url: 'https://youtube.com/-Z4jx5VMw8M',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: 'c7BVtGnlxT8',
@@ -647,7 +647,7 @@ const SampleVideos = [
     dateAdded: '2018-11-04T12:52:31+01:00',
     platform: 'YouTube',
     url: 'https://youtube.com/c7BVtGnlxT8',
-    isFavorite: false,
+    isFavorite: true,
   },
   {
     id: '533729157',
