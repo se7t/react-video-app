@@ -91,7 +91,7 @@ function App() {
     setAlertVisible(true);
   };
 
-  const handleDelete = (handledVideo) => {
+  const handleDeleteVideo = (handledVideo) => {
     // eslint-disable-next-line no-param-reassign
     setVideos(videos.filter((item) => item !== handledVideo));
 
@@ -100,6 +100,17 @@ function App() {
       bootstrapMessage: 'Video Deleted.',
     });
 
+    setAlertVisible(true);
+  };
+
+  const handleDeleteAllVideos = () => {
+    const amount = videos.length;
+    setVideos([]);
+
+    setAlert({
+      bootstrapColor: 'success',
+      bootstrapMessage: `Deleted ${amount} videos.`,
+    });
     setAlertVisible(true);
   };
 
@@ -288,7 +299,7 @@ function App() {
                 )}
 
             </Col>
-            <Col><Button color="danger" onClick={() => handleDelete(video)}><Delete /></Button></Col>
+            <Col><Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button></Col>
           </Row>
         </CardBody>
       </Card>
@@ -327,6 +338,9 @@ function App() {
           </ButtonDropdown>
           <Button className="ml-4" color="success" onClick={handleSampleVideos}>
             Load Sample Videos
+          </Button>
+          <Button className="ml-4" color="danger" onClick={handleDeleteAllVideos}>
+            Delete all videos
           </Button>
         </Form>
         {videos.length > 0 || alert.bootstrapColor === 'success'
