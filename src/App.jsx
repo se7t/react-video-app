@@ -60,7 +60,7 @@ function App() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [isDropdownOpen, toggleDropdownOpen] = useToggle();
-  const [areSamplesLoaded, toggleSamplesLoaded] = useToggle();
+  const [areSamplesLoaded, setSamplesLoaded] = useState(false);
   const [isFav, toggleIsFav] = useToggle();
 
   const videosPerPage = 6;
@@ -106,6 +106,7 @@ function App() {
   const handleDeleteAllVideos = () => {
     const amount = videos.length;
     setVideos([]);
+    setSamplesLoaded(false);
 
     setAlert({
       bootstrapColor: 'success',
@@ -226,7 +227,7 @@ function App() {
   const handleSampleVideos = () => {
     if (areSamplesLoaded === false) {
       setVideos([...SampleVideos]);
-      toggleSamplesLoaded();
+      setSamplesLoaded(true);
       setAlert({
         bootstrapColor: 'success',
         bootstrapMessage: `Loaded ${SampleVideos.length} sample videos.`,
