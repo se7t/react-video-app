@@ -229,6 +229,7 @@ function App() {
   const handleSampleVideos = () => {
     if (samplesLoaded === false) {
       setVideos([...SampleVideos]);
+      setSamplesLoaded(true);
       setAlert({
         bootstrapColor: 'success',
         bootstrapMessage: `Loaded ${SampleVideos.length} sample videos.`,
