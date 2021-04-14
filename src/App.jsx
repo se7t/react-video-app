@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Alert,
   Button,
+  ButtonGroup,
   ButtonDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -332,7 +333,7 @@ function App() {
             Submit
           </Button>
         </Form>
-        <Row className="mt-4">
+        <ButtonGroup className="mt-4">
           <ButtonDropdown isOpen={isDropdownOpen} toggle={toggleDropdownOpen}>
             <DropdownToggle caret color="info">
               Sort
@@ -356,7 +357,7 @@ function App() {
           >
             Favorites
           </Button>
-        </Row>
+        </ButtonGroup>
         {videos.length > 0 || alert.bootstrapColor === 'success'
           ? (
             <Alert className="mt-4" color={alert.bootstrapColor} isOpen={alertVisible} toggle={onDismiss}>
