@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import {
   Alert,
@@ -57,14 +56,12 @@ class Video {
 function App() {
   const { control, handleSubmit } = useForm();
   const [videos, setVideos] = useState([]);
-  const [alert, setAlert] = useState({});
+  const [alert, setAlert] = useState({ bootstrapColor: '', bootstrapMessage: '' });
   const [alertVisible, setAlertVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
-  const [dropdownState, setDropdownState] = useState(false);
-  const [samplesLoaded, setSamplesLoaded] = useState(false);
+  const [isDropdownOpen, toggleDropdownOpen] = useToggle();
+  const [areSamplesLoaded, toggleSamplesLoaded] = useToggle();
   const [isFav, toggleIsFav] = useToggle();
-
-  const toggleDropdown = () => setDropdownState(!dropdownState);
 
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
@@ -227,14 +224,14 @@ function App() {
   };
 
   const handleSampleVideos = () => {
-    if (samplesLoaded === false) {
+    if (areSamplesLoaded === false) {
       setVideos([...SampleVideos]);
-      setSamplesLoaded(true);
+      toggleSamplesLoaded();
       setAlert({
         bootstrapColor: 'success',
         bootstrapMessage: `Loaded ${SampleVideos.length} sample videos.`,
       });
-    } else if (samplesLoaded === true) {
+    } else if (areSamplesLoaded === true) {
       setAlert({
         bootstrapColor: 'danger',
         bootstrapMessage: 'Sample videos are already loaded.',
@@ -335,7 +332,7 @@ function App() {
           </Button>
         </Form>
         <Row className="mt-4">
-          <ButtonDropdown isOpen={dropdownState} toggle={toggleDropdown}>
+          <ButtonDropdown isOpen={isDropdownOpen} toggle={toggleDropdownOpen}>
             <DropdownToggle caret color="info">
               Sort
             </DropdownToggle>
