@@ -31,6 +31,7 @@ import getVideoId from 'get-video-id';
 import moment from 'moment';
 import numeral from 'numeral';
 import ReactPaginate from 'react-paginate';
+import useToggle from './utils/hooks';
 
 import VideoModal from './components/VideoModal';
 
@@ -61,11 +62,13 @@ function App() {
   const [pageNumber, setPageNumber] = useState(0);
   const [dropdownState, setDropdownState] = useState(false);
   const [samplesLoaded, setSamplesLoaded] = useState(false);
+  const [isFav, toggleIsFav] = useToggle();
 
   const toggleDropdown = () => setDropdownState(!dropdownState);
 
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
+
   const pageCount = Math.ceil(videos.length / videosPerPage);
 
   const changePage = ({ selected }) => {
@@ -239,72 +242,74 @@ function App() {
     setAlertVisible(true);
   };
 
-  const displayVideos = videos.slice(pagesVisited, pagesVisited + videosPerPage).map((video) => (
-    <Col className="mt-4" key={video.id}>
-      <Card>
-        {/* TODO: Open modal on thumbnail click */}
-        <CardImg
-          top
-          width="100%"
-          src={video.thumbnail}
-          alt="Card image cap"
-        />
-        <CardBody>
-          <CardTitle tag="h5">{video.title}</CardTitle>
-          <CardSubtitle tag="h6" className="mb-2 text-muted">
-            {video.author}
-          </CardSubtitle>
-          <Row>
-            <Col>
-              <CardText>
-                Views:
-                {' '}
-                {numeral(video.views).format('0.0a')}
-              </CardText>
-            </Col>
-            <Col>
-              <CardText>
-                Likes:
-                {' '}
-                {numeral(video.likes).format('0.0a')}
-              </CardText>
-            </Col>
-          </Row>
-          <CardText>
-            Added on:
-            {' '}
-            {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
-          </CardText>
-          <Row>
-            <Col>
-              <VideoModal
-                title={video.title}
-                iframe={video.iframe}
-                platform={video.platform}
-                videoUrl={video.url}
-                buttonLabel={<PlayArrow />}
-              />
-            </Col>
-            <Col>
-              {video.isFavorite
-                ? (
-                  <Button color="warning" onClick={() => handleAddToFav(video)}>
-                    <FavoriteBorderOutlined />
-                  </Button>
-                )
-                : (
-                  <Button color="success" onClick={() => handleAddToFav(video)}>
-                    <Favorite />
-                  </Button>
-                )}
-
-            </Col>
-            <Col><Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button></Col>
-          </Row>
-        </CardBody>
-      </Card>
-    </Col>
-  ));
+  const displayVideos = videos
+    .filter((video) => ((isFav && video.isFavorite) || !isFav))
+    .slice(pagesVisited, pagesVisited + videosPerPage)
+    .map((video) => (
+      <Col className="mt-4" key={video.id}>
+        <Card>
+          {/* TODO: Open modal on thumbnail click */}
+          <CardImg
+            top
+            width="100%"
+            src={video.thumbnail}
+            alt="Card image cap"
+          />
+          <CardBody>
+            <CardTitle tag="h5">{video.title}</CardTitle>
+            <CardSubtitle tag="h6" className="mb-2 text-muted">
+              {video.author}
+            </CardSubtitle>
+            <Row>
+              <Col>
+                <CardText>
+                  Views:
+                  {' '}
+                  {numeral(video.views).format('0.0a')}
+                </CardText>
+              </Col>
+              <Col>
+                <CardText>
+                  Likes:
+                  {' '}
+                  {numeral(video.likes).format('0.0a')}
+                </CardText>
+              </Col>
+            </Row>
+            <CardText>
+              Added on:
+              {' '}
+              {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
+            </CardText>
+            <Row>
+              <Col>
+                <VideoModal
+                  title={video.title}
+                  iframe={video.iframe}
+                  platform={video.platform}
+                  videoUrl={video.url}
+                  buttonLabel={<PlayArrow />}
+                />
+              </Col>
+              <Col>
+                {video.isFavorite
+                  ? (
+                    <Button color="warning" onClick={() => handleAddToFav(video)}>
+                      <FavoriteBorderOutlined />
+                    </Button>
+                  )
+                  : (
+                    <Button color="success" onClick={() => handleAddToFav(video)}>
+                      <Favorite />
+                    </Button>
+                  )}
+              </Col>
+              <Col><Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button></Col>
+            </Row>
+          </CardBody>
+        </Card>
+      </Col>
+    ));
 
   return (
     <div>
@@ -327,7 +332,9 @@ function App() {
           <Button type="submit" color="primary">
             Submit
           </Button>
-          <ButtonDropdown className="ml-4" isOpen={dropdownState} toggle={toggleDropdown}>
+        </Form>
+        <Row className="mt-4">
+          <ButtonDropdown isOpen={dropdownState} toggle={toggleDropdown}>
             <DropdownToggle caret color="info">
               Sort
             </DropdownToggle>
@@ -342,7 +349,15 @@ function App() {
           <Button className="ml-4" color="danger" onClick={handleDeleteAllVideos}>
             Delete all videos
           </Button>
-        </Form>
+          <Button
+            color="secondary"
+            className="ml-4"
+            outline={isFav === true}
+            onClick={toggleIsFav}
+          >
+            Favorites
+          </Button>
+        </Row>
         {videos.length > 0 || alert.bootstrapColor === 'success'
           ? (
             <Alert className="mt-4" color={alert.bootstrapColor} isOpen={alertVisible} toggle={onDismiss}>
@@ -355,6 +370,7 @@ function App() {
           <Row xs="1" sm="2" xl="3">
             {displayVideos}
           </Row>
+          {/* TODO: Fix pages amount when only favorites are displayed */}
           <ReactPaginate
             pageCount={pageCount}
             pageRangeDisplayed="5"
