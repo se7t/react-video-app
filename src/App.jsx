@@ -56,7 +56,7 @@ class Video {
 
 function App() {
   const { control, handleSubmit } = useForm();
-  const [videos, setVideos] = useState([]);
+  const [allVideos, setAllVideos] = useState([]);
   const [alert, setAlert] = useState({ bootstrapColor: '', bootstrapMessage: '' });
   const [alertVisible, setAlertVisible] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
@@ -67,15 +67,21 @@ function App() {
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
 
-  const pageCount = Math.ceil(videos.length / videosPerPage);
+  const filteredVideos = allVideos.filter((video) => ((isFav && video.isFavorite) || !isFav));
+
+  const pageCount = () => (
+    isFav
+      ? Math.ceil(filteredVideos.length / videosPerPage)
+      : Math.ceil(allVideos.length / videosPerPage)
+  );
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
 
   const sortVideos = (direction) => {
-    const sorted = [...videos].sort((a, b) => moment(a.dateAdded).diff(b.dateAdded));
-    return (direction === 'ascending') ? setVideos(sorted) : setVideos(sorted.reverse());
+    const sorted = [...filteredVideos].sort((a, b) => moment(a.dateAdded).diff(b.dateAdded));
+    return (direction === 'ascending') ? setAllVideos(sorted) : setAllVideos(sorted.reverse());
   };
 
   const onDismiss = () => setAlertVisible(false);
@@ -94,7 +100,7 @@ function App() {
 
   const handleDeleteVideo = (handledVideo) => {
     // eslint-disable-next-line no-param-reassign
-    setVideos(videos.filter((item) => item !== handledVideo));
+    setAllVideos(allVideos.filter((item) => item !== handledVideo));
 
     setAlert({
       bootstrapColor: 'success',
@@ -105,8 +111,8 @@ function App() {
   };
 
   const handleDeleteAllVideos = () => {
-    const amount = videos.length;
-    setVideos([]);
+    const amount = allVideos.length;
+    setAllVideos([]);
     setSamplesLoaded(false);
 
     setAlert({
@@ -118,7 +124,7 @@ function App() {
 
   // Temporarily disabled ID search
   const fetchVideoData = (data) => {
-    if (!videos.some((video) => video.id === getVideoId(data.videoUrl).id)) {
+    if (!allVideos.some((video) => video.id === getVideoId(data.videoUrl).id)) {
       setAlertVisible(true);
       // change to switch
       if (getVideoId(data.videoUrl).service === 'youtube') {
@@ -150,7 +156,7 @@ function App() {
                 false,
               );
 
-              setVideos([...videos, fetchedVideo]);
+              setAllVideos([...allVideos, fetchedVideo]);
               setAlert({
                 bootstrapColor: 'success',
                 bootstrapMessage: 'Video successfully added.',
@@ -196,7 +202,7 @@ function App() {
                 false,
               );
 
-              setVideos([...videos, fetchedVideo]);
+              setAllVideos([...allVideos, fetchedVideo]);
               setAlert({
                 bootstrapColor: 'success',
                 bootstrapMessage: 'Video successfully added.',
@@ -227,7 +233,7 @@ function App() {
 
   const handleSampleVideos = () => {
     if (areSamplesLoaded === false) {
-      setVideos([...SampleVideos]);
+      setAllVideos([...SampleVideos]);
       setSamplesLoaded(true);
       setAlert({
         bootstrapColor: 'success',
@@ -242,8 +248,7 @@ function App() {
     setAlertVisible(true);
   };
 
-  const displayVideos = videos
-    .filter((video) => ((isFav && video.isFavorite) || !isFav))
+  const displayVideos = filteredVideos
     .slice(pagesVisited, pagesVisited + videosPerPage)
     .map((video) => (
       <Col className="mt-4" key={video.id}>
@@ -357,7 +362,7 @@ function App() {
             Favorites
           </Button>
         </ButtonGroup>
-        {videos.length > 0 || alert.bootstrapColor === 'success'
+        {allVideos.length > 0 || alert.bootstrapColor === 'success'
           ? (
             <Alert className="mt-4" color={alert.bootstrapColor} isOpen={alertVisible} toggle={onDismiss}>
               {alert.bootstrapMessage}
@@ -369,9 +374,8 @@ function App() {
           <Row xs="1" sm="2" xl="3">
             {displayVideos}
           </Row>
-          {/* TODO: Fix pages amount when only favorites are displayed */}
           <ReactPaginate
-            pageCount={pageCount}
+            pageCount={pageCount()}
             pageRangeDisplayed="5"
             marginPagesDisplayed="1"
             previousLabel="Previous"
