@@ -414,15 +414,6 @@ function App() {
 
   return (
     <div>
-      <p>
-        Height:
-        {' '}
-        {height}
-        {' '}
-        / Width:
-        {' '}
-        {width}
-      </p>
       <Container>
         <h1 className="text-center">React Video App</h1>
         <Form onSubmit={handleSubmit(fetchVideoData)}>
