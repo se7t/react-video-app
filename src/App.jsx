@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import {
   Alert,
@@ -33,6 +34,7 @@ import moment from 'moment';
 import numeral from 'numeral';
 import ReactPaginate from 'react-paginate';
 import useToggle from './utils/hooks/useToggle';
+import useWindowDimensions from './utils/hooks/useWindowDimensions';
 
 import VideoModal from './components/VideoModal';
 
@@ -65,17 +67,46 @@ function App() {
   const [areSamplesLoaded, setSamplesLoaded] = useState(false);
   const [isFav, toggleIsFav] = useToggle();
   const [displayType, setDisplayType] = useToggle();
+  const { height, width } = useWindowDimensions();
 
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
 
   const filteredVideos = allVideos.filter((video) => ((isFav && video.isFavorite) || !isFav));
 
+  const BOOTSTRAP_BREAKPOINTS = {
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+    xxl: 1400,
+  };
+
   const pageCount = () => (
     isFav
       ? Math.ceil(filteredVideos.length / videosPerPage)
       : Math.ceil(allVideos.length / videosPerPage)
   );
+
+  const pageRange = () => {
+    switch (true) {
+      case width < BOOTSTRAP_BREAKPOINTS.sm:
+        return 1;
+      case width < BOOTSTRAP_BREAKPOINTS.md:
+        return 5;
+      case width < BOOTSTRAP_BREAKPOINTS.lg:
+        return 9;
+      case width < BOOTSTRAP_BREAKPOINTS.xl:
+        return 11;
+      case width < BOOTSTRAP_BREAKPOINTS.xxl:
+        return 13;
+      case width >= BOOTSTRAP_BREAKPOINTS.xxl:
+        return 15;
+      default:
+        return 6;
+    }
+  };
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
@@ -383,6 +414,15 @@ function App() {
 
   return (
     <div>
+      <p>
+        Height:
+        {' '}
+        {height}
+        {' '}
+        / Width:
+        {' '}
+        {width}
+      </p>
       <Container>
         <h1 className="text-center">React Video App</h1>
         <Form onSubmit={handleSubmit(fetchVideoData)}>
@@ -450,9 +490,9 @@ function App() {
             )}
           <ReactPaginate
             pageCount={pageCount()}
-            pageRangeDisplayed="5"
+            pageRangeDisplayed={pageRange()}
             marginPagesDisplayed="1"
-            previousLabel="Previous"
+            previousLabel="Prev"
             nextLabel="Next"
             breakLabel="..."
             breakClassName="page-item"
