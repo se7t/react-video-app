@@ -320,8 +320,8 @@ function App() {
       )
       : (
         <Media tag="li" className="mt-4" key={video.id}>
-          <Media left className="mr-4">
-            <Media object src={video.thumbnail} />
+          <Media left className="mr-4 w-25">
+            <Media object className="img-fluid" src={video.thumbnail} />
           </Media>
           <Media body>
             <Media heading tag="h5">
