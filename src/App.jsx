@@ -11,6 +11,7 @@ import {
   Card,
   CardBody,
   CardImg,
+  CardFooter,
   CardSubtitle,
   CardText,
   CardTitle,
@@ -287,7 +288,7 @@ function App() {
     .map((video) => (displayType === false
       ? (
         <Col className="mt-4" key={video.id}>
-          <Card>
+          <Card className="h-100">
             {/* TODO: Open modal on thumbnail click */}
             <CardImg
               top
@@ -295,58 +296,58 @@ function App() {
               src={video.thumbnail}
               alt="Card image cap"
             />
-            <CardBody>
-              <CardTitle tag="h5">{video.title}</CardTitle>
-              <CardSubtitle tag="h6" className="mb-2 text-muted">
-                {video.author}
-              </CardSubtitle>
-              <Row>
-                <Col>
-                  <CardText>
-                    Views:
-                    {' '}
-                    {numeral(video.views).format('0.0a')}
-                  </CardText>
-                </Col>
-                <Col>
-                  <CardText>
-                    Likes:
-                    {' '}
-                    {numeral(video.likes).format('0.0a')}
-                  </CardText>
-                </Col>
-              </Row>
-              <CardText>
-                Added on:
-                {' '}
-                {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
+            <CardBody className="d-flex flex-column justify-content-start">
+
+              <div className="mb-4">
+                <CardTitle tag="h5">{video.title}</CardTitle>
+                <CardSubtitle tag="h6" className="text-muted">
+                  {video.author}
+                </CardSubtitle>
+              </div>
+
+              <CardText className="d-flex flex-column">
+                <span>
+                  Views:
+                  {' '}
+                  {numeral(video.views).format('0.0a')}
+                </span>
+                <span>
+                  Likes:
+                  {' '}
+                  {numeral(video.likes).format('0.0a')}
+                </span>
+                <span>
+                  Added on:
+                  {' '}
+                  {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
+                </span>
               </CardText>
-              <Row>
-                <Col>
-                  <VideoModal
-                    title={video.title}
-                    iframe={video.iframe}
-                    platform={video.platform}
-                    videoUrl={video.url}
-                    buttonLabel={<PlayArrow />}
-                  />
-                </Col>
-                <Col>
-                  {video.isFavorite
-                    ? (
-                      <Button color="warning" onClick={() => handleAddToFav(video)}>
-                        <FavoriteBorderOutlined />
-                      </Button>
-                    )
-                    : (
-                      <Button color="success" onClick={() => handleAddToFav(video)}>
-                        <Favorite />
-                      </Button>
-                    )}
-                </Col>
-                <Col><Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button></Col>
-              </Row>
+
             </CardBody>
+            <CardFooter className="d-inline-flex justify-content-around">
+
+              <VideoModal
+                title={video.title}
+                iframe={video.iframe}
+                platform={video.platform}
+                videoUrl={video.url}
+                buttonLabel={<PlayArrow />}
+              />
+
+              {video.isFavorite
+                ? (
+                  <Button color="warning" onClick={() => handleAddToFav(video)}>
+                    <FavoriteBorderOutlined />
+                  </Button>
+                )
+                : (
+                  <Button color="success" onClick={() => handleAddToFav(video)}>
+                    <Favorite />
+                  </Button>
+                )}
+              <Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button>
+
+            </CardFooter>
           </Card>
         </Col>
       )
@@ -361,7 +362,7 @@ function App() {
                 {video.title}
                 {' '}
               </Media>
-              <Media heading tag="h6" className="mb-4">
+              <Media heading tag="h6" className="mb-4 text-muted">
                 {' '}
                 {video.author}
               </Media>
@@ -400,7 +401,7 @@ function App() {
                     />
                     {video.isFavorite
                       ? (
-                        <Button color="warning" onClick={() => handleAddToFav(video)}>
+                        <Button color="success" onClick={() => handleAddToFav(video)}>
                           <FavoriteBorderOutlined />
                         </Button>
                       )
