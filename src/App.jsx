@@ -23,6 +23,7 @@ import {
   Label,
   Media,
   Row,
+  Jumbotron,
 } from 'reactstrap';
 import {
   PlayArrow, Favorite, FavoriteBorderOutlined, Delete,
@@ -350,65 +351,71 @@ function App() {
         </Col>
       )
       : (
-        <Media tag="li" className="mt-4" key={video.id}>
-          <Media left className="mr-4 w-25">
-            <Media object className="img-fluid" src={video.thumbnail} />
-          </Media>
-          <Media body>
-            <Media heading tag="h5">
-              {video.title}
-              {' '}
+        <Jumbotron className="px-1 py-4 mt-4">
+          <Media tag="li" key={video.id}>
+            <Media left top className="ml-4 mr-4 w-25">
+              <Media object className="img-fluid" src={video.thumbnail} />
             </Media>
-            <Media heading tag="h6">
-              {' '}
-              {video.author}
+            <Media body>
+              <Media heading tag="h5" className="mb-1">
+                {video.title}
+                {' '}
+              </Media>
+              <Media heading tag="h6" className="mb-4">
+                {' '}
+                {video.author}
+              </Media>
+              <div className="mb-4">
+                <Row>
+                  <Col>
+                    Views:
+                    {' '}
+                    {numeral(video.views).format('0.0a')}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    Likes:
+                    {' '}
+                    {numeral(video.likes).format('0.0a')}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    Added on:
+                    {' '}
+                    {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
+                  </Col>
+                </Row>
+              </div>
+              <Row>
+                <Col>
+                  <ButtonGroup>
+                    <VideoModal
+                      title={video.title}
+                      iframe={video.iframe}
+                      platform={video.platform}
+                      videoUrl={video.url}
+                      buttonLabel={<PlayArrow />}
+                    />
+                    {video.isFavorite
+                      ? (
+                        <Button color="warning" onClick={() => handleAddToFav(video)}>
+                          <FavoriteBorderOutlined />
+                        </Button>
+                      )
+                      : (
+                        <Button color="success" onClick={() => handleAddToFav(video)}>
+                          <Favorite />
+                        </Button>
+                      )}
+                    <Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button>
+                  </ButtonGroup>
+                </Col>
+              </Row>
             </Media>
-            <Row xs="1" md="3" xl="4">
-              <Col>
-                Views:
-                {' '}
-                {numeral(video.views).format('0.0a')}
-              </Col>
-              <Col>
-                Likes:
-                {' '}
-                {numeral(video.likes).format('0.0a')}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                Added on:
-                {' '}
-                {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col>
-                <ButtonGroup>
-                  <VideoModal
-                    title={video.title}
-                    iframe={video.iframe}
-                    platform={video.platform}
-                    videoUrl={video.url}
-                    buttonLabel={<PlayArrow />}
-                  />
-                  {video.isFavorite
-                    ? (
-                      <Button color="warning" onClick={() => handleAddToFav(video)}>
-                        <FavoriteBorderOutlined />
-                      </Button>
-                    )
-                    : (
-                      <Button color="success" onClick={() => handleAddToFav(video)}>
-                        <Favorite />
-                      </Button>
-                    )}
-                  <Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button>
-                </ButtonGroup>
-              </Col>
-            </Row>
           </Media>
-        </Media>
+        </Jumbotron>
       )
     ));
 
@@ -434,7 +441,7 @@ function App() {
             Submit
           </Button>
         </Form>
-        <ButtonGroup className="mt-4">
+        <ButtonGroup>
           <ButtonDropdown isOpen={isDropdownOpen} toggle={toggleDropdownOpen}>
             <DropdownToggle caret color="info">
               Sort
