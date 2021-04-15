@@ -501,6 +501,8 @@ function App() {
               {displayVideos}
             </Row>
           )}
+        {allVideos.length > 0
+        && (
         <ReactPaginate
           pageCount={pageCount()}
           pageRangeDisplayed={pageRange()}
@@ -511,7 +513,7 @@ function App() {
           breakClassName="page-item"
           breakLinkClassName="page-link"
           onPageChange={changePage}
-          containerClassName="pagination justify-content-center mt-4"
+          containerClassName="pagination justify-content-center my-5"
           pageClassName="page-item"
           pageLinkClassName="page-link"
           activeClassName="page-item active"
@@ -522,6 +524,7 @@ function App() {
           nextLinkClassName="page-link"
           disabledClassName="page-item disabled"
         />
+        )}
       </Container>
     </div>
   );
