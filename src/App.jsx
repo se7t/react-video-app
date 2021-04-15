@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import {
   Alert,
@@ -69,7 +68,7 @@ function App() {
   const [areSamplesLoaded, setSamplesLoaded] = useState(false);
   const [isFav, toggleIsFav] = useToggle();
   const [displayType, toggleDisplayType] = useToggle();
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
@@ -423,7 +422,9 @@ function App() {
   return (
     <div>
       <Container>
-        <h1 className="text-center">React Video App</h1>
+        <h1 className="text-center display-4 my-5">
+          Local Video Archive
+        </h1>
         <Form onSubmit={handleSubmit(fetchVideoData)}>
           <FormGroup>
             <Label for="videoURL">Video URL:</Label>
@@ -489,40 +490,38 @@ function App() {
           )
           : false}
 
-        <div>
-          {displayType
-            ? (
-              <Media list className="pl-0">
-                {displayVideos}
-              </Media>
-            )
-            : (
-              <Row xs="1" sm="2" xl="3">
-                {displayVideos}
-              </Row>
-            )}
-          <ReactPaginate
-            pageCount={pageCount()}
-            pageRangeDisplayed={pageRange()}
-            marginPagesDisplayed="1"
-            previousLabel="Prev"
-            nextLabel="Next"
-            breakLabel="..."
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            onPageChange={changePage}
-            containerClassName="pagination justify-content-center mt-4"
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            activeClassName="page-item active"
-            activeLinkClassName="page-link "
-            previousClassName="page-item"
-            nextClassName="page-item"
-            previousLinkClassName="page-link"
-            nextLinkClassName="page-link"
-            disabledClassName="page-item disabled"
-          />
-        </div>
+        {displayType
+          ? (
+            <Media list className="pl-0">
+              {displayVideos}
+            </Media>
+          )
+          : (
+            <Row xs="1" sm="2" xl="3">
+              {displayVideos}
+            </Row>
+          )}
+        <ReactPaginate
+          pageCount={pageCount()}
+          pageRangeDisplayed={pageRange()}
+          marginPagesDisplayed="1"
+          previousLabel="Prev"
+          nextLabel="Next"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          onPageChange={changePage}
+          containerClassName="pagination justify-content-center mt-4"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          activeClassName="page-item active"
+          activeLinkClassName="page-link "
+          previousClassName="page-item"
+          nextClassName="page-item"
+          previousLinkClassName="page-link"
+          nextLinkClassName="page-link"
+          disabledClassName="page-item disabled"
+        />
       </Container>
     </div>
   );

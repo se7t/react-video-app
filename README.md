@@ -1,4 +1,4 @@
-# React Video App
+# Local Video Archive
 
 This app stores user's favorite videos in context of a website.
 
