@@ -32,7 +32,7 @@ import getVideoId from 'get-video-id';
 import moment from 'moment';
 import numeral from 'numeral';
 import ReactPaginate from 'react-paginate';
-import useToggle from './utils/hooks';
+import useToggle from './utils/hooks/useToggle';
 
 import VideoModal from './components/VideoModal';
 
