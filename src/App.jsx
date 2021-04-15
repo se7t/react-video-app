@@ -67,7 +67,7 @@ function App() {
   const [isDropdownOpen, toggleDropdownOpen] = useToggle();
   const [areSamplesLoaded, setSamplesLoaded] = useState(false);
   const [isFav, toggleIsFav] = useToggle();
-  const [displayType, setDisplayType] = useToggle();
+  const [displayType, toggleDisplayType] = useToggle();
   const { height, width } = useWindowDimensions();
 
   const videosPerPage = 6;
@@ -437,35 +437,49 @@ function App() {
             />
             <FormText>Supported platforms: YouTube, Vimeo.</FormText>
           </FormGroup>
-          <Button type="submit" color="primary">
-            Submit
-          </Button>
+          <Row xs="1" sm="2">
+            <Col>
+              <ButtonGroup>
+                <Button type="submit" color="primary">
+                  Submit
+                </Button>
+                <Button color="success" onClick={handleSampleVideos}>
+                  Load Sample Videos
+                </Button>
+              </ButtonGroup>
+            </Col>
+            <Col>
+              <Button color="danger" className="float-sm-right mt-4 mt-sm-0" onClick={handleDeleteAllVideos}>
+                Delete all videos
+              </Button>
+            </Col>
+          </Row>
         </Form>
-        <ButtonGroup>
-          <ButtonDropdown isOpen={isDropdownOpen} toggle={toggleDropdownOpen}>
-            <DropdownToggle caret color="info">
-              Sort
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={() => (sortVideos('ascending'))}>Ascending</DropdownItem>
-              <DropdownItem onClick={() => (sortVideos('descending'))}>Descending</DropdownItem>
-            </DropdownMenu>
-          </ButtonDropdown>
-          <Button color="success" onClick={handleSampleVideos}>
-            Load Sample Videos
-          </Button>
-          <Button color="warning" onClick={setDisplayType}>Toogle display</Button>
-          <Button color="danger" onClick={handleDeleteAllVideos}>
-            Delete all videos
-          </Button>
-          <Button
-            color="secondary"
-            outline={isFav === true}
-            onClick={toggleIsFav}
-          >
-            Favorites
-          </Button>
-        </ButtonGroup>
+        <Row className="mt-4">
+          <Col>
+            <ButtonDropdown isOpen={isDropdownOpen} toggle={toggleDropdownOpen}>
+              <DropdownToggle caret color="info">
+                Sort
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem onClick={() => (sortVideos('ascending'))}>Ascending</DropdownItem>
+                <DropdownItem onClick={() => (sortVideos('descending'))}>Descending</DropdownItem>
+              </DropdownMenu>
+            </ButtonDropdown>
+            <ButtonGroup className="ml-4">
+              <Button color="info" onClick={toggleDisplayType}>
+                {displayType === true ? ('List Display') : 'Card Display'}
+              </Button>
+              <Button
+                color="success"
+                outline={isFav === false}
+                onClick={toggleIsFav}
+              >
+                Only Favorites
+              </Button>
+            </ButtonGroup>
+          </Col>
+        </Row>
         {allVideos.length > 0 || alert.bootstrapColor === 'success'
           ? (
             <Alert className="mt-4" color={alert.bootstrapColor} isOpen={alertVisible} toggle={onDismiss}>
