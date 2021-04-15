@@ -20,6 +20,7 @@ import {
   FormText,
   Input,
   Label,
+  Media,
   Row,
 } from 'reactstrap';
 import {
@@ -63,6 +64,7 @@ function App() {
   const [isDropdownOpen, toggleDropdownOpen] = useToggle();
   const [areSamplesLoaded, setSamplesLoaded] = useState(false);
   const [isFav, toggleIsFav] = useToggle();
+  const [displayType, setDisplayType] = useToggle();
 
   const videosPerPage = 6;
   const pagesVisited = pageNumber * videosPerPage;
@@ -250,70 +252,133 @@ function App() {
 
   const displayVideos = filteredVideos
     .slice(pagesVisited, pagesVisited + videosPerPage)
-    .map((video) => (
-      <Col className="mt-4" key={video.id}>
-        <Card>
-          {/* TODO: Open modal on thumbnail click */}
-          <CardImg
-            top
-            width="100%"
-            src={video.thumbnail}
-            alt="Card image cap"
-          />
-          <CardBody>
-            <CardTitle tag="h5">{video.title}</CardTitle>
-            <CardSubtitle tag="h6" className="mb-2 text-muted">
-              {video.author}
-            </CardSubtitle>
-            <Row>
-              <Col>
-                <CardText>
-                  Views:
-                  {' '}
-                  {numeral(video.views).format('0.0a')}
-                </CardText>
-              </Col>
-              <Col>
-                <CardText>
-                  Likes:
-                  {' '}
-                  {numeral(video.likes).format('0.0a')}
-                </CardText>
-              </Col>
-            </Row>
-            <CardText>
-              Added on:
+    .map((video) => (displayType === false
+      ? (
+        <Col className="mt-4" key={video.id}>
+          <Card>
+            {/* TODO: Open modal on thumbnail click */}
+            <CardImg
+              top
+              width="100%"
+              src={video.thumbnail}
+              alt="Card image cap"
+            />
+            <CardBody>
+              <CardTitle tag="h5">{video.title}</CardTitle>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">
+                {video.author}
+              </CardSubtitle>
+              <Row>
+                <Col>
+                  <CardText>
+                    Views:
+                    {' '}
+                    {numeral(video.views).format('0.0a')}
+                  </CardText>
+                </Col>
+                <Col>
+                  <CardText>
+                    Likes:
+                    {' '}
+                    {numeral(video.likes).format('0.0a')}
+                  </CardText>
+                </Col>
+              </Row>
+              <CardText>
+                Added on:
+                {' '}
+                {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
+              </CardText>
+              <Row>
+                <Col>
+                  <VideoModal
+                    title={video.title}
+                    iframe={video.iframe}
+                    platform={video.platform}
+                    videoUrl={video.url}
+                    buttonLabel={<PlayArrow />}
+                  />
+                </Col>
+                <Col>
+                  {video.isFavorite
+                    ? (
+                      <Button color="warning" onClick={() => handleAddToFav(video)}>
+                        <FavoriteBorderOutlined />
+                      </Button>
+                    )
+                    : (
+                      <Button color="success" onClick={() => handleAddToFav(video)}>
+                        <Favorite />
+                      </Button>
+                    )}
+                </Col>
+                <Col><Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button></Col>
+              </Row>
+            </CardBody>
+          </Card>
+        </Col>
+      )
+      : (
+        <Media tag="li" className="mt-4" key={video.id}>
+          <Media left className="mr-4">
+            <Media object src={video.thumbnail} />
+          </Media>
+          <Media body>
+            <Media heading tag="h5">
+              {video.title}
               {' '}
-              {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
-            </CardText>
+            </Media>
+            <Media heading tag="h6">
+              {' '}
+              {video.author}
+            </Media>
+            <Row xs="1" md="3" xl="4">
+              <Col>
+                Views:
+                {' '}
+                {numeral(video.views).format('0.0a')}
+              </Col>
+              <Col>
+                Likes:
+                {' '}
+                {numeral(video.likes).format('0.0a')}
+              </Col>
+            </Row>
             <Row>
               <Col>
-                <VideoModal
-                  title={video.title}
-                  iframe={video.iframe}
-                  platform={video.platform}
-                  videoUrl={video.url}
-                  buttonLabel={<PlayArrow />}
-                />
+                Added on:
+                {' '}
+                {moment(video.dateAdded).format('MMMM Do YYYY, h:mm:ss a')}
               </Col>
-              <Col>
-                {video.isFavorite
-                  ? (
-                    <Button color="warning" onClick={() => handleAddToFav(video)}>
-                      <FavoriteBorderOutlined />
-                    </Button>
-                  )
-                  : (
-                    <Button color="success" onClick={() => handleAddToFav(video)}>
-                      <Favorite />
-                    </Button>
-                  )}
-              </Col>
-              <Col><Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button></Col>
             </Row>
-          </CardBody>
-        </Card>
-      </Col>
+            <Row className="mt-3">
+              <Col>
+                <ButtonGroup>
+                  <VideoModal
+                    title={video.title}
+                    iframe={video.iframe}
+                    platform={video.platform}
+                    videoUrl={video.url}
+                    buttonLabel={<PlayArrow />}
+                  />
+                  {video.isFavorite
+                    ? (
+                      <Button color="warning" onClick={() => handleAddToFav(video)}>
+                        <FavoriteBorderOutlined />
+                      </Button>
+                    )
+                    : (
+                      <Button color="success" onClick={() => handleAddToFav(video)}>
+                        <Favorite />
+                      </Button>
+                    )}
+                  <Button color="danger" onClick={() => handleDeleteVideo(video)}><Delete /></Button>
+                </ButtonGroup>
+              </Col>
+            </Row>
+          </Media>
+        </Media>
+      )
     ));
 
   return (
@@ -351,6 +416,7 @@ function App() {
           <Button color="success" onClick={handleSampleVideos}>
             Load Sample Videos
           </Button>
+          <Button color="warning" onClick={setDisplayType}>Toogle display</Button>
           <Button color="danger" onClick={handleDeleteAllVideos}>
             Delete all videos
           </Button>
@@ -371,9 +437,17 @@ function App() {
           : false}
 
         <div>
-          <Row xs="1" sm="2" xl="3">
-            {displayVideos}
-          </Row>
+          {displayType
+            ? (
+              <Media list className="pl-0">
+                {displayVideos}
+              </Media>
+            )
+            : (
+              <Row xs="1" sm="2" xl="3">
+                {displayVideos}
+              </Row>
+            )}
           <ReactPaginate
             pageCount={pageCount()}
             pageRangeDisplayed="5"
