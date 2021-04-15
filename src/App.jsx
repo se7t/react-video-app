@@ -343,15 +343,14 @@ function App() {
               <DropdownItem onClick={() => (sortVideos('descending'))}>Descending</DropdownItem>
             </DropdownMenu>
           </ButtonDropdown>
-          <Button className="ml-4" color="success" onClick={handleSampleVideos}>
+          <Button color="success" onClick={handleSampleVideos}>
             Load Sample Videos
           </Button>
-          <Button className="ml-4" color="danger" onClick={handleDeleteAllVideos}>
+          <Button color="danger" onClick={handleDeleteAllVideos}>
             Delete all videos
           </Button>
           <Button
             color="secondary"
-            className="ml-4"
             outline={isFav === true}
             onClick={toggleIsFav}
           >
