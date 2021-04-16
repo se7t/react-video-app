@@ -139,8 +139,8 @@ function App() {
   };
 
   const handleDeleteVideo = (handledVideo) => {
-    // eslint-disable-next-line no-param-reassign
-    setAllVideos(allVideos.filter((item) => item !== handledVideo));
+    const updatedVideos = allVideos.filter((video) => video.id !== handledVideo.id);
+    setAllVideos(updatedVideos);
 
     setAlert({
       bootstrapColor: 'success',
