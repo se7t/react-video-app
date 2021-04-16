@@ -120,9 +120,15 @@ function App() {
 
   const onDismiss = () => setAlertVisible(false);
 
-  const handleAddToFav = (handledVideo) => {
-    // eslint-disable-next-line no-param-reassign
-    handledVideo.isFavorite = !(handledVideo.isFavorite);
+  const handleToggleFavorite = (handledVideo) => {
+    const updatedVideos = allVideos.map((video) => {
+      if (video.id === handledVideo.id) {
+        return { ...video, isFavorite: !handledVideo.isFavorite };
+      }
+      return video;
+    });
+
+    setAllVideos(updatedVideos);
 
     setAlert({
       bootstrapColor: 'success',
@@ -335,12 +341,12 @@ function App() {
 
               {video.isFavorite
                 ? (
-                  <Button color="warning" onClick={() => handleAddToFav(video)}>
+                  <Button color="warning" onClick={() => handleToggleFavorite(video)}>
                     <FavoriteBorderOutlined />
                   </Button>
                 )
                 : (
-                  <Button color="success" onClick={() => handleAddToFav(video)}>
+                  <Button color="success" onClick={() => handleToggleFavorite(video)}>
                     <Favorite />
                   </Button>
                 )}
@@ -400,12 +406,12 @@ function App() {
                     />
                     {video.isFavorite
                       ? (
-                        <Button color="success" onClick={() => handleAddToFav(video)}>
+                        <Button color="success" onClick={() => handleToggleFavorite(video)}>
                           <FavoriteBorderOutlined />
                         </Button>
                       )
                       : (
-                        <Button color="success" onClick={() => handleAddToFav(video)}>
+                        <Button color="success" onClick={() => handleToggleFavorite(video)}>
                           <Favorite />
                         </Button>
                       )}
