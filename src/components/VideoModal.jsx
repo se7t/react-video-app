@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
@@ -6,15 +5,9 @@ import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
 
-const VideoModal = (props) => {
-  const {
-    title,
-    iframe,
-    platform,
-    videoUrl,
-    buttonLabel,
-  } = props;
-
+const VideoModal = ({
+  title, iframe, platform, videoUrl, buttonLabel,
+}) => {
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
