@@ -60,14 +60,14 @@ export default function FetchForm() {
         },
       }).then((response) => {
         setVideos([...videos, response.data]);
-      });
+      }).catch((error) => console.error(error.name, error.message));
     }
 
     // Vimeo ids are always 9 characters long
     if (!videoExists && (selectedService === 'vimeo' || selectedId.length === 9)) {
       await vimeo.get(`/videos/${selectedId}`).then((response) => {
         setVideos([...videos, response.data]);
-      });
+      }).catch((error) => console.error(error.name, error.message));
     }
   };
 

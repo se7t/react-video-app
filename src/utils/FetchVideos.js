@@ -33,6 +33,9 @@ export const youtube = axios.create({
   baseURL: 'https://youtube.googleapis.com/youtube/v3/',
   transformResponse: [(data) => {
     const parsedData = JSON.parse(data);
+    if (parsedData.pageInfo.totalResults === 0) {
+      throw new Error('404: Video does not exist.');
+    }
     const fetchedVideo = new Video(parsedData.items[0].id,
       parsedData.items[0].snippet.thumbnails.medium.url,
       parsedData.items[0].snippet.title,
@@ -65,6 +68,7 @@ export const vimeo = axios.create({
   baseURL: 'https://api.vimeo.com/',
   transformResponse: [(data) => {
     const parsedData = JSON.parse(data);
+    if (parsedData.error) throw new Error('404: Video does not exist.');
     const fetchedVideo = new Video(
       // API does not provide ID, instead we get it from the URI.
       // Vimeo IDs are always 9 characters long.
