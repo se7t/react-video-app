@@ -15,11 +15,14 @@ import numeral from 'numeral';
 import { VideoContext } from './VideoContext';
 
 import VideoModal from './VideoModal';
+import useToggle from '../utils/hooks/useToggle';
 
 const VideoListItem = ({
   id, thumbnail, title, author, views, likes, iframe, dateAdded, platform, url, isFavorite,
 }) => {
   const [videos, setVideos] = useContext(VideoContext);
+
+  const [modal, toggleModal] = useToggle();
 
   const toggleFavorite = () => {
     const updatedVideos = videos.map((video) => {
@@ -41,7 +44,7 @@ const VideoListItem = ({
     <Jumbotron className="px-1 py-4">
       <Media tag="li">
         <Media left top className="ml-4 mr-4 w-25">
-          <Media object className="img-fluid" src={thumbnail} />
+          <Media object className="img-fluid" src={thumbnail} onClick={toggleModal} />
         </Media>
         <Media body>
           <Media heading tag="h5" className="mb-1">
@@ -82,6 +85,8 @@ const VideoListItem = ({
                   platform={platform}
                   videoUrl={url}
                   buttonLabel={<PlayArrow />}
+                  modalValue={modal}
+                  modalMethod={toggleModal}
                 />
                 {isFavorite
                   ? (

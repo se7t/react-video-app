@@ -14,11 +14,14 @@ import numeral from 'numeral';
 import { VideoContext } from './VideoContext';
 
 import VideoModal from './VideoModal';
+import useToggle from '../utils/hooks/useToggle';
 
 const VideoCard = ({
   id, thumbnail, title, author, views, likes, iframe, dateAdded, platform, url, isFavorite,
 }) => {
   const [videos, setVideos] = useContext(VideoContext);
+
+  const [modal, toggleModal] = useToggle();
 
   const toggleFavorite = () => {
     const updatedVideos = videos.map((video) => {
@@ -45,6 +48,7 @@ const VideoCard = ({
           width="100%"
           src={thumbnail}
           alt="Card image cap"
+          onClick={toggleModal}
         />
         <CardBody className="d-flex flex-column justify-content-start">
           <div className="mb-4">
@@ -78,6 +82,8 @@ const VideoCard = ({
             platform={platform}
             videoUrl={url}
             buttonLabel={<PlayArrow />}
+            modalValue={modal}
+            modalMethod={toggleModal}
           />
           {isFavorite
             ? (
