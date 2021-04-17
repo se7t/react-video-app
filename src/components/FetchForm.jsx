@@ -63,6 +63,7 @@ export default function FetchForm() {
         setVideos([...videos, response.data]);
         success = true;
       }).catch((error) => {
+        // eslint-disable-next-line no-console
         console.error(error.name, error.message);
         success = false;
       });
@@ -74,6 +75,7 @@ export default function FetchForm() {
         setVideos([...videos, response.data]);
         success = true;
       }).catch((error) => {
+        // eslint-disable-next-line no-console
         console.error(error.name, error.message);
         success = false;
       });
