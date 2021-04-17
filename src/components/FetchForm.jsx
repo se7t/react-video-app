@@ -50,9 +50,10 @@ export default function FetchForm() {
   const fetchVideoData = async (data) => {
     const selectedService = getVideoId(String(data.videoUrl)).service;
     const selectedId = getVideoId(String(data.videoUrl)).id || data.videoUrl;
+    const videoExists = videos.some((video) => video.id === getVideoId(data.videoUrl).id);
 
     // YouTube ids are always 11 characters long
-    if (selectedService === 'youtube' || selectedId.length === 11) {
+    if (!videoExists && (selectedService === 'youtube' || selectedId.length === 11)) {
       await youtube.get('/videos', {
         params: {
           id: selectedId,
@@ -63,7 +64,7 @@ export default function FetchForm() {
     }
 
     // Vimeo ids are always 9 characters long
-    if (selectedService === 'vimeo' || selectedId.length === 9) {
+    if (!videoExists && (selectedService === 'vimeo' || selectedId.length === 9)) {
       await vimeo.get(`/videos/${selectedId}`).then((response) => {
         setVideos([...videos, response.data]);
       });
