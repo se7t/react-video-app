@@ -28,7 +28,7 @@ export default function FetchForm() {
       });
     } else if (areSamplesLoaded === true) {
       setAlert({
-        bootstrapColor: 'danger',
+        bootstrapColor: 'info',
         bootstrapMessage: 'Sample videos are already loaded.',
         visible: true,
       });
@@ -51,6 +51,7 @@ export default function FetchForm() {
     const selectedService = getVideoId(String(data.videoUrl)).service;
     const selectedId = getVideoId(String(data.videoUrl)).id || data.videoUrl;
     const videoExists = videos.some((video) => video.id === selectedId);
+    let success;
 
     // YouTube ids are always 11 characters long
     if (!videoExists && (selectedService === 'youtube' || selectedId.length === 11)) {
@@ -60,14 +61,46 @@ export default function FetchForm() {
         },
       }).then((response) => {
         setVideos([...videos, response.data]);
-      }).catch((error) => console.error(error.name, error.message));
+        success = true;
+      }).catch((error) => {
+        console.error(error.name, error.message);
+        success = false;
+      });
     }
 
     // Vimeo ids are always 9 characters long
     if (!videoExists && (selectedService === 'vimeo' || selectedId.length === 9)) {
       await vimeo.get(`/videos/${selectedId}`).then((response) => {
         setVideos([...videos, response.data]);
-      }).catch((error) => console.error(error.name, error.message));
+        success = true;
+      }).catch((error) => {
+        console.error(error.name, error.message);
+        success = false;
+      });
+    }
+
+    switch (success) {
+      case true:
+        setAlert({
+          bootstrapColor: 'success',
+          bootstrapMessage: 'Video successfully added.',
+          visible: true,
+        });
+        break;
+      case false:
+        setAlert({
+          bootstrapColor: 'danger',
+          bootstrapMessage: 'Video fetch failed.',
+          visible: true,
+        });
+        break;
+      default:
+        setAlert({
+          bootstrapColor: 'info',
+          bootstrapMessage: 'Video already exists.',
+          visible: true,
+        });
+        break;
     }
   };
 
