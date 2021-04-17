@@ -50,7 +50,7 @@ export default function FetchForm() {
   const fetchVideoData = async (data) => {
     const selectedService = getVideoId(String(data.videoUrl)).service;
     const selectedId = getVideoId(String(data.videoUrl)).id || data.videoUrl;
-    const videoExists = videos.some((video) => video.id === getVideoId(data.videoUrl).id);
+    const videoExists = videos.some((video) => video.id === selectedId);
 
     // YouTube ids are always 11 characters long
     if (!videoExists && (selectedService === 'youtube' || selectedId.length === 11)) {
