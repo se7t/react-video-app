@@ -4,7 +4,7 @@ import { Alert } from 'reactstrap';
 
 import { AlertBoxContext } from './AlertBoxContext';
 
-export default function AlertBox() {
+const AlertBox = () => {
   const [alert, setAlert] = useContext(AlertBoxContext);
 
   const onDismiss = () => {
@@ -16,4 +16,6 @@ export default function AlertBox() {
       {alert.bootstrapMessage}
     </Alert>
   );
-}
+};
+
+export default AlertBox;

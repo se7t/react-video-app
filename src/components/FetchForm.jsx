@@ -10,7 +10,7 @@ import { AlertBoxContext } from './AlertBoxContext';
 import SampleVideos from '../utils/LoadSampleVideos';
 import { youtube, vimeo } from '../utils/FetchVideos';
 
-export default function FetchForm() {
+const FetchForm = () => {
   const [videos, setVideos] = useContext(VideoContext);
   // eslint-disable-next-line no-unused-vars
   const [alert, setAlert] = useContext(AlertBoxContext);
@@ -26,7 +26,9 @@ export default function FetchForm() {
         bootstrapMessage: `Loaded ${SampleVideos.length} sample videos.`,
         visible: true,
       });
-    } else if (areSamplesLoaded === true) {
+    }
+
+    if (areSamplesLoaded === true) {
       setAlert({
         bootstrapColor: 'info',
         bootstrapMessage: 'Sample videos are already loaded.',
@@ -140,4 +142,6 @@ export default function FetchForm() {
       </Row>
     </Form>
   );
-}
+};
+
+export default FetchForm;

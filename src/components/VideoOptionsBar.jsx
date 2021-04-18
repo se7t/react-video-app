@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
 
 import {
@@ -7,12 +6,13 @@ import {
 
 import moment from 'moment';
 
+import PropTypes from 'prop-types';
 import { VideoContext } from './VideoContext';
 
 import useToggle from '../utils/hooks/useToggle';
 
 const VideoOptionsBar = ({
-  filteredVideos, displayType, toggleDisplayType, displayOnlyFavorites, toggleDisplayOnlyFavorites,
+  filteredVideos, displayType, setDisplayType, displayOnlyFavorites, toggleDisplayOnlyFavorites,
 }) => {
   // eslint-disable-next-line no-unused-vars
   const [videos, setVideos] = useContext(VideoContext);
@@ -36,8 +36,11 @@ const VideoOptionsBar = ({
           </DropdownMenu>
         </ButtonDropdown>
         <ButtonGroup className="ml-4">
-          <Button color="info" onClick={toggleDisplayType}>
-            {displayType === true ? ('List Display') : 'Card Display'}
+          <Button
+            color="info"
+            onClick={() => (displayType === 'card' ? setDisplayType('list') : setDisplayType('card'))}
+          >
+            {displayType === 'card' ? ('Card Display') : 'List Display'}
           </Button>
           <Button
             color="success"
@@ -50,6 +53,14 @@ const VideoOptionsBar = ({
       </Col>
     </Row>
   );
+};
+
+VideoOptionsBar.propTypes = {
+  filteredVideos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  displayType: PropTypes.string.isRequired,
+  displayOnlyFavorites: PropTypes.bool.isRequired,
+  setDisplayType: PropTypes.func.isRequired,
+  toggleDisplayOnlyFavorites: PropTypes.func.isRequired,
 };
 
 export default VideoOptionsBar;

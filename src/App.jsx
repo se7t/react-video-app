@@ -10,25 +10,23 @@ import AlertBox from './components/AlertBox';
 import FetchForm from './components/FetchForm';
 import VideoList from './components/VideoList';
 
-function App() {
-  return (
-    <div>
-      <Container>
-        <h1 className="text-center display-4 my-5">
-          Local Video Archive
-        </h1>
-        <AlertBoxProvider>
-          <VideoProvider>
-            <FetchForm />
-            <AlertBox />
-            <PaginationProvider>
-              <VideoList />
-            </PaginationProvider>
-          </VideoProvider>
-        </AlertBoxProvider>
-      </Container>
-    </div>
-  );
-}
+const App = () => (
+  <div>
+    <Container>
+      <h1 className="text-center display-4 my-5">
+        Local Video Archive
+      </h1>
+      <AlertBoxProvider>
+        <VideoProvider>
+          <FetchForm />
+          <AlertBox />
+          <PaginationProvider>
+            <VideoList />
+          </PaginationProvider>
+        </VideoProvider>
+      </AlertBoxProvider>
+    </Container>
+  </div>
+);
 
 export default App;

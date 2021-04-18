@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Media, Row } from 'reactstrap';
 
@@ -12,12 +12,12 @@ import VideoCard from './VideoCard';
 import VideoListItem from './VideoListItem';
 import VideoOptionsBar from './VideoOptionsBar';
 
-export default function VideoList() {
+const VideoList = () => {
   const [pageNumber, setPageNumber] = useContext(PaginationContext);
   // eslint-disable-next-line no-unused-vars
   const [videos, setVideos] = useContext(VideoContext);
   const [displayOnlyFavorites, toggleDisplayOnlyFavorites] = useToggle();
-  const [displayType, toggleDisplayType] = useToggle();
+  const [displayType, setDisplayType] = useState('card');
 
   const videosPerPage = 6;
 
@@ -28,23 +28,8 @@ export default function VideoList() {
 
   const displayVideos = filteredVideos
     .slice(pagesVisited, pagesVisited + videosPerPage)
-    .map((video) => (displayType
+    .map((video) => (displayType === 'card'
       ? (
-        <VideoListItem
-          key={video.id}
-          id={video.id}
-          thumbnail={video.thumbnail}
-          title={video.title}
-          author={video.author}
-          views={video.views}
-          likes={video.likes}
-          iframe={video.iframe}
-          dateAdded={video.dateAdded}
-          platform={video.platform}
-          isFavorite={video.isFavorite}
-        />
-      )
-      : (
         <VideoCard
           key={video.id}
           id={video.id}
@@ -56,6 +41,23 @@ export default function VideoList() {
           iframe={video.iframe}
           dateAdded={video.dateAdded}
           platform={video.platform}
+          url={video.url}
+          isFavorite={video.isFavorite}
+        />
+      )
+      : (
+        <VideoListItem
+          key={video.id}
+          id={video.id}
+          thumbnail={video.thumbnail}
+          title={video.title}
+          author={video.author}
+          views={video.views}
+          likes={video.likes}
+          iframe={video.iframe}
+          dateAdded={video.dateAdded}
+          platform={video.platform}
+          url={video.url}
           isFavorite={video.isFavorite}
         />
       )));
@@ -65,21 +67,22 @@ export default function VideoList() {
       <VideoOptionsBar
         filteredVideos={filteredVideos}
         displayType={displayType}
-        toggleDisplayType={toggleDisplayType}
+        setDisplayType={setDisplayType}
         displayOnlyFavorites={displayOnlyFavorites}
         toggleDisplayOnlyFavorites={toggleDisplayOnlyFavorites}
         setPageNumber={setPageNumber}
       />
-      {displayType
+      {displayType === 'card'
         ? (
-          <Media list className="pl-0 mt-4">
-            {displayVideos}
-          </Media>
-        )
-        : (
+
           <Row xs="1" sm="2" xl="3" className="mt-4">
             {displayVideos}
           </Row>
+        )
+        : (
+          <Media list className="pl-0 mt-4">
+            {displayVideos}
+          </Media>
         )}
       <Pagination
         videosAmount={videos.length}
@@ -89,4 +92,6 @@ export default function VideoList() {
       />
     </div>
   );
-}
+};
+
+export default VideoList;

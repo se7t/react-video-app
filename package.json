@@ -1,13 +1,14 @@
 {
   "name": "react-video-app",
+  "description": "A React app that stores user's favorite videos in context of a website.",
   "license": "MIT",
   "author": {
-    "name": "se7t",
+    "name": "Kacper Kochan",
     "email": "kacper.kochan@protonmail.com",
     "url": "https://www.linkedin.com/in/kacper-kochan-42b27219a/"
   },
   "homepage": "https://github.com/se7t/react-video-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -20,6 +21,7 @@
     "get-video-id": "^3.2.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
+    "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.0.0",
@@ -53,11 +55,11 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.23.0",
+    "eslint": "^7.24.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0"
   }
 }

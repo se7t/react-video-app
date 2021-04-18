@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
 
 import {
@@ -11,6 +10,7 @@ import {
 import moment from 'moment';
 import numeral from 'numeral';
 
+import PropTypes from 'prop-types';
 import { VideoContext } from './VideoContext';
 
 import VideoModal from './VideoModal';
@@ -83,7 +83,7 @@ const VideoCard = ({
             videoUrl={url}
             buttonLabel={<PlayArrow />}
             modalValue={modal}
-            modalMethod={toggleModal}
+            toggleModal={toggleModal}
           />
           {isFavorite
             ? (
@@ -101,6 +101,20 @@ const VideoCard = ({
       </Card>
     </Col>
   );
+};
+
+VideoCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  thumbnail: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
+  likes: PropTypes.number.isRequired,
+  iframe: PropTypes.string.isRequired,
+  dateAdded: PropTypes.string.isRequired,
+  platform: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
 };
 
 export default VideoCard;

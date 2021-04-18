@@ -1,10 +1,9 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
 import React, { useState, createContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 export const VideoContext = createContext();
 
-export const VideoProvider = (props) => {
+export const VideoProvider = ({ children }) => {
   const [videos, setVideos] = useState(JSON.parse(localStorage.getItem('videosStorage')) || []);
 
   useEffect(() => {
@@ -13,7 +12,11 @@ export const VideoProvider = (props) => {
 
   return (
     <VideoContext.Provider value={[videos, setVideos]}>
-      {props.children}
+      {children}
     </VideoContext.Provider>
   );
+};
+
+VideoProvider.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
