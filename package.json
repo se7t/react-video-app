@@ -20,10 +20,10 @@
     "get-video-id": "^3.2.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
-    "qs": "^6.10.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.0.0",
+    "react-html-parser": "^2.0.2",
     "react-paginate": "^7.1.2",
     "react-scripts": "4.0.3",
     "reactstrap": "^8.9.0"

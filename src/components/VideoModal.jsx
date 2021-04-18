@@ -4,21 +4,20 @@ import React from 'react';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
+import ReactHtmlParser from 'react-html-parser';
 
 const VideoModal = ({
   title, iframe, platform, videoUrl, buttonLabel, modalValue, modalMethod,
 }) => (
   <div>
     <Button color="primary" onClick={modalMethod}>{buttonLabel}</Button>
-    <Modal isOpen={modalValue} toggle={modalMethod}>
+    <Modal className="modal-xl" isOpen={modalValue} toggle={modalMethod}>
       <ModalHeader toggle={modalMethod}>{title}</ModalHeader>
       <ModalBody
-        style={{ display: 'flex', justifyContent: 'center' }}
-        dangerouslySetInnerHTML={
-            // Vimeo provides width and height which are unnecessary
-            { __html: iframe.replace('width="1920" height="1080"', '') }
-          }
-      />
+        className="embed-responsive embed-responsive-16by9"
+      >
+        {ReactHtmlParser(iframe)}
+      </ModalBody>
       <ModalFooter>
         <Button
           color="primary"
