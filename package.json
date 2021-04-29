@@ -7,7 +7,11 @@
     "email": "kacper.kochan@protonmail.com",
     "url": "https://www.linkedin.com/in/kacper-kochan-42b27219a/"
   },
-  "homepage": "https://github.com/se7t/react-video-app",
+  "homepage": "https://local-video-archive.web.app/",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/se7t/react-video-app.git"
+  },
   "version": "1.0.0",
   "private": true,
   "dependencies": {

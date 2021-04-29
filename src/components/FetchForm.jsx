@@ -121,7 +121,14 @@ const FetchForm = () => {
               // eslint-disable-next-line react/jsx-props-no-spreading
           render={({ field }) => <Input {...field} />}
         />
-        <FormText>Supported platforms: YouTube, Vimeo.</FormText>
+        <div className="row">
+          <FormText className="col-md">Supported platforms: YouTube, Vimeo.</FormText>
+          <FormText className="col-md">
+            Source code:
+            {' '}
+            <a href="https://github.com/se7t/react-video-app">https://github.com/se7t/react-video-app</a>
+          </FormText>
+        </div>
       </FormGroup>
       <Row xs="1" sm="2">
         <Col>
